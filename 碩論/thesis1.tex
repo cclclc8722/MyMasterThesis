@@ -1,0 +1,185 @@
+\documentclass[oneside]{nccuthesis}
+
+\usepackage{times}
+\usepackage{verbatim}
+\usepackage{color}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{pdfpages} % include outside .pdf
+\usepackage{wallpaper} % watermark
+\usepackage{tocloft}
+\usepackage{xfrac}
+% for table generate
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{diagbox}
+\usepackage{adjustbox}
+\usepackage{bm}
+\usepackage{tcolorbox}
+
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{epsfig}
+
+% Format the refs
+\usepackage[sort,comma]{natbib}
+\usepackage[hidelinks]{hyperref}
+% For the tree
+\usepackage{tikz}
+\usepackage{tikz-qtree}
+
+% For barchart
+\usepackage{pgfplots}
+
+% Using the tex-text mapping for ligatures etc.
+\defaultfontfeatures{Mapping=tex-text}
+
+% Set the default fonts
+\setmainfont{Times New Roman}
+\setCJKmainfont{標楷體-繁}
+
+% Your information goes here
+\input{nccuvars}
+\pgfplotsset{compat=1.14}
+
+\renewcommand\figurename{圖}
+\renewcommand\tablename{表}
+\renewcommand\contentsname{目錄}
+\renewcommand\listfigurename{圖目錄}
+\renewcommand\listtablename{表目錄}
+
+% value > 0
+\def\xeCJKembold{1}
+
+% hack into xeCJK, you don't need to understand it
+\def\saveCJKnode{\dimen255\lastkern}
+\def\restoreCJKnode{\kern-\dimen255\kern\dimen255}
+
+% save old definition of \CJKsymbol and \CJKpunctsymbol for CJK output
+\let\CJKoldsymbol\CJKsymbol
+\let\CJKoldpunctsymbol\CJKpunctsymbol
+
+% Very Naive Chinese Number
+  \DeclareRobustCommand{\naiveZhNum}[1]{
+  \ifnum #1 = 1
+  一
+  \else \ifnum #1 = 2
+  二
+  \else \ifnum #1 = 3
+  三
+  \else \ifnum #1 = 4
+  四
+  \else \ifnum #1 = 5
+  五
+  \else \ifnum #1 = 6
+  六
+  \else \ifnum #1 = 7
+  七
+  \else \ifnum #1 = 8
+  八
+  \else \ifnum #1 = 9
+  九
+  \else
+  #1
+  \fi\fi\fi\fi\fi\fi\fi\fi\fi
+  }
+
+\titleformat{\chapter}{\centering\Huge\bfseries}{第\naiveZhNum{\thechapter}\,章}{1em}{}
+
+\titleclass{\subsubsubsection}{straight}[\subsection]
+
+\newcounter{subsubsubsection}[subsubsection]
+\renewcommand\thesubsubsubsection{\thesubsubsection.\arabic{subsubsubsection}}
+\renewcommand\theparagraph{\thesubsubsubsection.\arabic{paragraph}} % optional; useful if paragraphs are to be numbered
+
+\titleformat{\subsubsubsection}
+  {\normalfont\normalsize\bfseries}{\thesubsubsubsection}{1em}{}
+\titlespacing*{\subsubsubsection}
+{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+\makeatletter
+\renewcommand\paragraph{\@startsection{paragraph}{5}{\z@}%
+  {3.25ex \@plus1ex \@minus.2ex}%
+  {-1em}%
+  {\normalfont\normalsize\bfseries}}
+\renewcommand\subparagraph{\@startsection{subparagraph}{6}{\parindent}%
+  {3.25ex \@plus1ex \@minus .2ex}%
+  {-1em}%
+  {\normalfont\normalsize\bfseries}}
+\def\toclevel@subsubsubsection{4}
+\def\toclevel@paragraph{5}
+\def\toclevel@paragraph{6}
+\def\l@subsubsubsection{\@dottedtocline{4}{7em}{4em}}
+\def\l@paragraph{\@dottedtocline{5}{10em}{5em}}
+\def\l@subparagraph{\@dottedtocline{6}{14em}{6em}}
+\makeatother
+
+\setcounter{secnumdepth}{4}
+\setcounter{tocdepth}{4}
+
+\begin{document}
+
+% 政大論文浮水印
+% \input{src/with-watermark.tex}
+
+\hypersetup{pageanchor=false}
+
+\frontmatter
+
+\pagenumbering{gobble}
+
+\makecover
+
+\clearpages
+\setcounter{page}{1}
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+\phantomsection
+
+% generate certification
+% \makecertification
+% or include scanned pdf
+% \addcontentsline{toc}{chapter}{口試委員會審定書}
+% \includepdf[pages={1}]{pdfs/cert.pdf}
+
+% \input{acknowledgements}
+\input{abstract}
+
+% Table of Content
+\clearpages
+\tableofcontents
+% List of Figures
+\clearpages
+\listoffigures
+% List of Tables
+\clearpages
+\listoftables
+
+\mainmatter
+
+
+% Your thesis goes here
+\input{chapters/1.緒論}
+\input{chapters/2.文獻回顧}
+\input{chapters/3.研究方法}
+\input{chapters/4.實證結果}
+\input{chapters/5.結論與建議}
+\input{chapters/6.Reference}
+\@startappendix
+
+% \input{chapters/dataset}
+
+\backmatter
+
+\clearpages
+\phantomsection
+\addcontentsline{toc}{chapter}{\bibname}
+\bibliographystyle{apa}
+
+% Your bibliography goes here
+\bibliography{thesis.bib}
+
+\end{document}
